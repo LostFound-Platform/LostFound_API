@@ -393,6 +393,35 @@ Run Tests
 
 ## 🤝 Contributing
 
+We welcome passionate students, builders, and aspiring contributors who want to grow with the project.
+
+To maintain quality and ensure the right fit, contributors join through a structured pathway rather than direct public pull requests.
+
+### Contributor Pathway
+
+**Application Form → Conversation / Interview → Trial Task or Internship Stage → Contributor → Lead**
+
+### Process Overview
+
+1. **Application Form**
+   Submit the application form to express your interest and share your background, skills, and preferred role.
+
+2. **Conversation / Interview**
+   Shortlisted applicants will be invited to a conversation or interview to discuss experience, goals, communication, and team fit.
+
+3. **Trial Task / Internship Stage**
+   Applicants may complete a trial task or participate in a short internship-style evaluation period to demonstrate technical ability, collaboration, and ownership.
+
+4. **Contributor**
+   Candidates who successfully complete the evaluation stage may join the project as contributors.
+
+5. **Lead**
+   Contributors who consistently show strong performance, initiative, communication, and impact may be considered for lead roles based on their level and readiness.
+
+> **Note:** We currently do not accept direct unsolicited pull requests. If you’d like to contribute, please start with the application process.
+
+### If you are already a contributor and want to contribute to this ASP.NET Core Web API project:
+
 1. Fork Repository
 2. Create Feature Branch
 
