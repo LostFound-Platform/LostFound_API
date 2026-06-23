@@ -11,11 +11,11 @@ namespace DataAccess
     public class TransferRequestDAO
     {
         #region Variables
-        private readonly FBLADbContext db;
+        private readonly BackToMeDbContext db;
         #endregion
 
         #region Constructor
-        public TransferRequestDAO(FBLADbContext db)
+        public TransferRequestDAO(BackToMeDbContext db)
         {
             this.db = db;
         }

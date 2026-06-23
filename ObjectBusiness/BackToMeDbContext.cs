@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ObjectBusiness
 {
-    public class FBLADbContext : DbContext
+    public class BackToMeDbContext : DbContext
     {
         // Get DbContext from DI
         #region Constructor
-        public FBLADbContext(DbContextOptions<FBLADbContext> options) : base(options)
+        public BackToMeDbContext(DbContextOptions<BackToMeDbContext> options) : base(options)
         {
         }
         #endregion

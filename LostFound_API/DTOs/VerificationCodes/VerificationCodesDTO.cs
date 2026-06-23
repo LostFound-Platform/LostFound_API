@@ -1,4 +1,4 @@
-﻿namespace FBLA_API.DTOs.VerificationCodes
+﻿namespace LostFound_API.DTOs.VerificationCodes
 {
     public class VerificationCodesDTO
     {

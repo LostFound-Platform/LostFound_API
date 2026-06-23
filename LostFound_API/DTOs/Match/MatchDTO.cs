@@ -1,4 +1,4 @@
-﻿namespace FBLA_API.DTOs.Match
+﻿namespace LostFound_API.DTOs.Match
 {
     public class MatchDTO
     {

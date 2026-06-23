@@ -13,12 +13,12 @@ namespace DataAccess
     public class PostDAO
     {
         #region Variables
-        private readonly FBLADbContext db;
+        private readonly BackToMeDbContext db;
         private readonly UsersDAO usersDAO;
         #endregion
 
         #region Constructor
-        public PostDAO(FBLADbContext db, UsersDAO usersDAO)
+        public PostDAO(BackToMeDbContext db, UsersDAO usersDAO)
         {
             this.db = db;
             this.usersDAO = usersDAO;

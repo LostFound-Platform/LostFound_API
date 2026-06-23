@@ -1,4 +1,4 @@
-﻿namespace FBLA_API.DTOs.Auth
+﻿namespace LostFound_API.DTOs.Auth
 {
     public class SignInRequestDTO
     {

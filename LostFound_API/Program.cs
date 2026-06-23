@@ -1,9 +1,9 @@
 using DataAccess;
-using FBLA_API.DTOs.Chat;
-using FBLA_API.DTOs.Match;
-using FBLA_API.DTOs.Posts;
-using FBLA_API.DTOs.Users;
-using FBLA_API.DTOs.VerificationCodes;
+using LostFound_API.DTOs.Chat;
+using LostFound_API.DTOs.Match;
+using LostFound_API.DTOs.Posts;
+using LostFound_API.DTOs.Users;
+using LostFound_API.DTOs.VerificationCodes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -118,7 +118,7 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddHostedService<HolderReminderService>();
 
 // Connect to SQL Server
-builder.Services.AddDbContext<FBLADbContext>(options =>
+builder.Services.AddDbContext<BackToMeDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection"));
 });

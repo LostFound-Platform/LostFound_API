@@ -12,11 +12,11 @@ namespace DataAccess
     public class PickUpRequestDAO
     {
         #region Variables
-        private readonly FBLADbContext db;
+        private readonly BackToMeDbContext db;
         #endregion
 
         #region Constructor
-        public PickUpRequestDAO(FBLADbContext db)
+        public PickUpRequestDAO(BackToMeDbContext db)
         {
             this.db = db;
         }

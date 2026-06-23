@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace ObjectBusiness
 {
-    public class FBLADbContextFactory : IDesignTimeDbContextFactory<FBLADbContext>
+    public class BackToMeDbContextFactory : IDesignTimeDbContextFactory<BackToMeDbContext>
     {
         // Create DBContext without DI
-        public FBLADbContext CreateDbContext(string[] args)
+        public BackToMeDbContext CreateDbContext(string[] args)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var optionsBuilder = new DbContextOptionsBuilder<FBLADbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<BackToMeDbContext>();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyConnection"));
 
-            return new FBLADbContext(optionsBuilder.Options);
+            return new BackToMeDbContext(optionsBuilder.Options);
         }
     }
 }

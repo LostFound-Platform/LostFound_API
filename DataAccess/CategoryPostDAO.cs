@@ -11,11 +11,11 @@ namespace DataAccess
     public class CategoryPostDAO
     {
         #region Variables
-        private readonly FBLADbContext db;
+        private readonly BackToMeDbContext db;
         #endregion
 
         #region Constructor
-        public CategoryPostDAO(FBLADbContext db)
+        public CategoryPostDAO(BackToMeDbContext db)
         {
             this.db = db;
         }

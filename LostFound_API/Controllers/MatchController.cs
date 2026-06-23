@@ -1,5 +1,5 @@
-﻿using FBLA_API.DTOs.Match;
-using FBLA_API.DTOs.VerificationCodes;
+﻿using LostFound_API.DTOs.Match;
+using LostFound_API.DTOs.VerificationCodes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace FBLA_API.Controllers
+namespace LostFound_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

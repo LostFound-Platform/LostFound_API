@@ -26,7 +26,7 @@ namespace Services
             while (await timer.WaitForNextTickAsync())
             {
                 using var scope = scopeFactory.CreateScope();
-                var db = scope.ServiceProvider.GetRequiredService<FBLADbContext>(); // Used to connect Entity/DB
+                var db = scope.ServiceProvider.GetRequiredService<BackToMeDbContext>(); // Used to connect Entity/DB
                 var emailSender = scope.ServiceProvider.GetRequiredService<EmailSender>();
 
                 var twoDaysAgo = DateTime.UtcNow.AddDays(-2);
