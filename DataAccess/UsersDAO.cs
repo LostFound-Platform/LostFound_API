@@ -11,11 +11,11 @@ namespace DataAccess
     public class UsersDAO
     {
         #region Variables
-        private readonly FBLADbContext db;
+        private readonly BackToMeDbContext db;
         #endregion
 
         #region Constructor
-        public UsersDAO(FBLADbContext db)
+        public UsersDAO(BackToMeDbContext db)
         {
             this.db = db;
         }

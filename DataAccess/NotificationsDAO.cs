@@ -11,12 +11,12 @@ namespace DataAccess
     public class NotificationsDAO
     {
         #region Variables
-        private readonly FBLADbContext db;
+        private readonly BackToMeDbContext db;
         private readonly UsersDAO usersDAO;
         #endregion
 
         #region Constructor
-        public NotificationsDAO(FBLADbContext db, UsersDAO usersDAO)
+        public NotificationsDAO(BackToMeDbContext db, UsersDAO usersDAO)
         {
             this.db = db;
             this.usersDAO = usersDAO;

@@ -12,11 +12,11 @@ namespace DataAccess
     public class ChatDAO
     {
         #region Variables
-        private readonly FBLADbContext db;
+        private readonly BackToMeDbContext db;
         #endregion
 
         #region Constructor
-        public ChatDAO(FBLADbContext db)
+        public ChatDAO(BackToMeDbContext db)
         {
             this.db = db;
         }

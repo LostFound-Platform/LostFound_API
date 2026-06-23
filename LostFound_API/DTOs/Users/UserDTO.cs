@@ -1,4 +1,4 @@
-﻿namespace FBLA_API.DTOs.Users
+﻿namespace LostFound_API.DTOs.Users
 {
     public class UserDTO
     {

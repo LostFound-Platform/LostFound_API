@@ -1,6 +1,6 @@
 ﻿using ObjectBusiness;
 
-namespace FBLA_API.DTOs.Posts
+namespace LostFound_API.DTOs.Posts
 {
     public class PostDTO
     {

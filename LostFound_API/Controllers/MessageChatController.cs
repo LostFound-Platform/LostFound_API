@@ -1,4 +1,4 @@
-﻿using FBLA_API.DTOs.Chat;
+﻿using LostFound_API.DTOs.Chat;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -12,7 +12,7 @@ using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace FBLA_API.Controllers
+namespace LostFound_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

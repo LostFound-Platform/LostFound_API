@@ -11,11 +11,11 @@ namespace DataAccess
     public class VerificationCodeDAO
     {
         #region Variables
-        private readonly FBLADbContext db;
+        private readonly BackToMeDbContext db;
         #endregion
 
         #region Constructor
-        public VerificationCodeDAO(FBLADbContext db)
+        public VerificationCodeDAO(BackToMeDbContext db)
         {
             this.db = db;
         }

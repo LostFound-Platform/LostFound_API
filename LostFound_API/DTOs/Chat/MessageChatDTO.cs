@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace FBLA_API.DTOs.Chat
+namespace LostFound_API.DTOs.Chat
 {
     public class MessageChatDTO
     {
