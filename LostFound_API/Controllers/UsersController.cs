@@ -27,6 +27,7 @@ namespace LostFound_API.Controllers
     {
         #region Variables
         private readonly IUsersRepository usersRepository;
+        private readonly IInstitutionRepository institutionRepository;
         private readonly IStudentRepository studentRepository;
         private readonly IWebHostEnvironment webHost;
         private readonly IConfiguration configuration;
@@ -42,7 +43,8 @@ namespace LostFound_API.Controllers
                                IStudentRepository studentRepository,
                                IMemoryCache memoryCache,
                                EmailSender emailSender,
-                               IHubContext<SystemHub> hubContext)
+                               IHubContext<SystemHub> hubContext,
+                               IInstitutionRepository institutionRepository)
         {
             this.usersRepository = usersRepository;
             this.memoryCache = memoryCache;
@@ -51,6 +53,7 @@ namespace LostFound_API.Controllers
             this.configuration = configuration;
             this.studentRepository = studentRepository;
             this.emailSender = emailSender;
+            this.institutionRepository = institutionRepository;
         }
         #endregion
 
@@ -168,57 +171,69 @@ namespace LostFound_API.Controllers
         [HttpPost("sign-up")]
         public async Task<ActionResult> SignUp([FromBody] Users user)
         {
-            // Check duplicate student ID
-            var existingStudentByStudentId = studentRepository.AllStudents()
-                                                                      .Any(s => s.StudentId == user.StudentId);
-
-            if (existingStudentByStudentId)
+            if (user == null)
             {
-                return Conflict(new
+                return BadRequest(new
                 {
-                    message = "Your student ID is already in use"
+                    message = "Data is not valid"
                 });
             }
 
-            // Check duplicate email
-            var existingUserByEmail = usersRepository.AllUsers()
-                                                     .Any(u => u.Email.Equals(user.Email));
+            var institutionIdExist = institutionRepository.GetInstitutionByID(user.InstitutionId);
 
-            if (existingUserByEmail)
+            if (institutionIdExist != null)
             {
-                return Conflict(new
+                // Check duplicate student ID
+                var existingStudentByStudentId = studentRepository.AllStudents()
+                                                                          .Any(s => s.StudentId == user.StudentId);
+
+                if (existingStudentByStudentId)
                 {
-                    message = "Your email is already in use"
-                });
-            }
+                    return Conflict(new
+                    {
+                        message = "Your student ID is already in use"
+                    });
+                }
 
-            try
-            {
-                var isAddedUser = await usersRepository.SignUp(user);
-                if (isAddedUser)
+                // Check duplicate email
+                var existingUserByEmail = usersRepository.AllUsers()
+                                                         .Any(u => u.Email.Equals(user.Email));
+
+                if (existingUserByEmail)
                 {
-                    var student = new Student
+                    return Conflict(new
                     {
-                        StudentId = user.StudentId,
-                        UserId = user.UserId,
-                    };
+                        message = "Your email is already in use"
+                    });
+                }
 
-                    var isAddedStudent = await studentRepository.SignUpStudent(student);
-
-                    if (isAddedStudent)
+                try
+                {
+                    var isAddedUser = await usersRepository.SignUp(user);
+                    if (isAddedUser)
                     {
-                        // Send verification code via email
-                        var token = Guid.NewGuid().ToString();
-                        memoryCache.Set($"EMAIL_VERIFY_{token}", user.Email, TimeSpan.FromMinutes(15));
+                        var student = new Student
+                        {
+                            StudentId = user.StudentId,
+                            UserId = user.UserId,
+                        };
 
-                        // Send verification email
-                        // Send email verify
-                        string senderName = "Back2Me";
-                        string senderEmail = "baoandng07@gmail.com";
-                        string toName = user.FirstName + " " + user.LastName;
-                        string toEmail = user.Email;
-                        string subject = "✅ Please Verify Your Email";
-                        string content = $@"
+                        var isAddedStudent = await studentRepository.SignUpStudent(student);
+
+                        if (isAddedStudent)
+                        {
+                            // Send verification code via email
+                            var token = Guid.NewGuid().ToString();
+                            memoryCache.Set($"EMAIL_VERIFY_{token}", user.Email, TimeSpan.FromMinutes(15));
+
+                            // Send verification email
+                            // Send email verify
+                            string senderName = "Back2Me";
+                            string senderEmail = "mycampuslostfound@gmail.com";
+                            string toName = user.FirstName + " " + user.LastName;
+                            string toEmail = user.Email;
+                            string subject = "✅ Please Verify Your Email";
+                            string content = $@"
                         <html>
                         <head>
                           <style>
@@ -317,69 +332,77 @@ namespace LostFound_API.Controllers
                         </html>
                         ";
 
-                        await emailSender.SendEmail(senderName, senderEmail, toName, toEmail, subject, content);
+                            await emailSender.SendEmail(senderName, senderEmail, toName, toEmail, subject, content);
 
-                        // JWT config
-                        var issuer = configuration["JwtConfig:Issuer"];
-                        var audience = configuration["JwtConfig:Audience"];
-                        var key = configuration["JwtConfig:Key"];
-                        var tokenValidityMins = configuration.GetValue<int>("JwtConfig:TokenValidityMins");
-                        var tokenExpiryTimeStamp = DateTime.UtcNow.AddMinutes(tokenValidityMins); // Token expiration time
+                            // JWT config
+                            var issuer = configuration["JwtConfig:Issuer"];
+                            var audience = configuration["JwtConfig:Audience"];
+                            var key = configuration["JwtConfig:Key"];
+                            var tokenValidityMins = configuration.GetValue<int>("JwtConfig:TokenValidityMins");
+                            var tokenExpiryTimeStamp = DateTime.UtcNow.AddMinutes(tokenValidityMins); // Token expiration time
 
-                        // Create JWT access token and assign token
-                        var tokenDescriptor = new SecurityTokenDescriptor // Describe token
-                        {
-                            Subject = new ClaimsIdentity(new[]
+                            // Create JWT access token and assign token
+                            var tokenDescriptor = new SecurityTokenDescriptor // Describe token
                             {
+                                Subject = new ClaimsIdentity(new[]
+                                {
                                 new Claim(ClaimTypes.NameIdentifier, user.Email),
                                 new Claim(ClaimTypes.Role, user.Role.ToString()),
                             }),
-                            Issuer = issuer,
-                            Audience = audience,
-                            Expires = tokenExpiryTimeStamp,
-                            SigningCredentials = new SigningCredentials(
-                                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
-                                SecurityAlgorithms.HmacSha256Signature
-                            )
-                        };
+                                Issuer = issuer,
+                                Audience = audience,
+                                Expires = tokenExpiryTimeStamp,
+                                SigningCredentials = new SigningCredentials(
+                                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+                                    SecurityAlgorithms.HmacSha256Signature
+                                )
+                            };
 
-                        // Process token was described
-                        var tokenHandler = new JwtSecurityTokenHandler();
-                        var securityToken = tokenHandler.CreateToken(tokenDescriptor); // Create object JWT Token
-                        var accessToken = tokenHandler.WriteToken(securityToken); // Serialize token to string  for client
+                            // Process token was described
+                            var tokenHandler = new JwtSecurityTokenHandler();
+                            var securityToken = tokenHandler.CreateToken(tokenDescriptor); // Create object JWT Token
+                            var accessToken = tokenHandler.WriteToken(securityToken); // Serialize token to string  for client
 
-                        // Assign token for client
-                        user.AccessToken = accessToken;
-                        user.ExpiresIn = (int)tokenExpiryTimeStamp.Subtract(DateTime.Now).TotalSeconds;
+                            // Assign token for client
+                            user.AccessToken = accessToken;
+                            user.ExpiresIn = (int)tokenExpiryTimeStamp.Subtract(DateTime.Now).TotalSeconds;
 
-                        //Response.Cookies.Append("AccessToken", accessToken, new CookieOptions
-                        //{
-                        //    Secure = true, // Set to true in production
-                        //    HttpOnly = true,
-                        //    SameSite = SameSiteMode.None, // If SameSite is none Secure must be true
-                        //    Expires = tokenExpiryTimeStamp // Set cookie expiration time
-                        //});
+                            //Response.Cookies.Append("AccessToken", accessToken, new CookieOptions
+                            //{
+                            //    Secure = true, // Set to true in production
+                            //    HttpOnly = true,
+                            //    SameSite = SameSiteMode.None, // If SameSite is none Secure must be true
+                            //    Expires = tokenExpiryTimeStamp // Set cookie expiration time
+                            //});
 
-                        //Response.Cookies.Append("Username", user.FirstName + user.LastName, new CookieOptions
-                        //{
-                        //    Secure = true,
-                        //    SameSite = SameSiteMode.None,
-                        //    Expires = tokenExpiryTimeStamp
-                        //});
+                            //Response.Cookies.Append("Username", user.FirstName + user.LastName, new CookieOptions
+                            //{
+                            //    Secure = true,
+                            //    SameSite = SameSiteMode.None,
+                            //    Expires = tokenExpiryTimeStamp
+                            //});
 
-                        return Ok(new
-                        {
-                            Message = "Signed up successfully",
-                            AccessToken = accessToken,
-                        });
+                            return Ok(new
+                            {
+                                Message = "Signed up successfully",
+                                AccessToken = accessToken,
+                            });
+                        }
                     }
-                }
 
-                return BadRequest("Failed to sign up. Please try again");
+                    return BadRequest("Failed to sign up. Please try again");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Something went wrong!");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(new
+                {
+                    message = "This campus is not available in the system, so the account cannot be created."
+                });
             }
         }
         #endregion
@@ -529,7 +552,7 @@ namespace LostFound_API.Controllers
                     {
                         // Send email email has been verified
                         string senderName = "Back2Me";
-                        string senderEmail = "baoandng07@gmail.com";
+                        string senderEmail = "mycampuslostfound@gmail.com";
                         string toName = user.FirstName + " " + user.LastName;
                         string toEmail = user.Email;
                         string subject = "✅ Your Email Has Been Verified!";
@@ -706,7 +729,7 @@ namespace LostFound_API.Controllers
 
             // Send verification email
             string senderName = "Back2Me";
-            string senderEmail = "baoandng07@gmail.com";
+            string senderEmail = "mycampuslostfound@gmail.com";
             string toName = user.FirstName + " " + user.LastName;
             string toEmail = user.Email;
             string subject = "✅ Please Verify Your Email";
@@ -909,7 +932,7 @@ namespace LostFound_API.Controllers
 
                 // Send email verify
                 string senderName = "Back2Me";
-                string senderEmail = "baoandng07@gmail.com";
+                string senderEmail = "mycampuslostfound@gmail.com";
                 string toName = user.FirstName + " " + user.LastName;
                 string toEmail = user.Email;
                 string subject = "🔐 Reset Your Password";
@@ -1064,7 +1087,7 @@ namespace LostFound_API.Controllers
 
                 // Send email confirm email is changed successfully
                 string senderName = "Back2Me";
-                string senderEmail = "baoandng07@gmail.com";
+                string senderEmail = "mycampuslostfound@gmail.com";
                 string toName = user.FirstName + " " + user.LastName;
                 string toEmail = user.Email;
                 string subject = "✅ Your Password Has Been Changed Successfully";
@@ -1194,7 +1217,7 @@ namespace LostFound_API.Controllers
 
                 // Send email confirm email is changed successfully
                 string senderName = "Back2Me";
-                string senderEmail = "baoandng07@gmail.com";
+                string senderEmail = "mycampuslostfound@gmail.com";
                 string toName = user.FirstName + " " + user.LastName;
                 string toEmail = user.Email;
                 string subject = "✅ Your Second-Step Authentication Images Have Been Updated";

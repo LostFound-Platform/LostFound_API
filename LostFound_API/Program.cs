@@ -32,6 +32,9 @@ builder.Services.AddCors(options =>
 // Add Memorycache
 builder.Services.AddMemoryCache();
 
+// Register HTTP Client
+builder.Services.AddHttpClient();
+
 // Add services to the container and allow automatic handle enum
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -102,6 +105,7 @@ builder.Services.AddScoped<TransferRequestDAO>();
 builder.Services.AddScoped<ChatDAO>();
 builder.Services.AddScoped<NotificationsDAO>();
 builder.Services.AddScoped<MessageChatDAO>();
+builder.Services.AddScoped<InstitutionDAO>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
@@ -113,6 +117,7 @@ builder.Services.AddScoped<IPickUpRequestRepository, PickUpRequestRepository>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IMessageChatRepository, MessageChatRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IInstitutionRepository, InstitutionRepository>();
 
 // Register BackgroundService
 builder.Services.AddHostedService<HolderReminderService>();

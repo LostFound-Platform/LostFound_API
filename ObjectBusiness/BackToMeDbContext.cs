@@ -28,6 +28,7 @@ namespace ObjectBusiness
         public DbSet<Chat> Chat { get; set; }
         public DbSet<MessageChat> MessageChat { get; set; }
         public DbSet<Notifications> Notifications { get; set; }
+        public DbSet<Institution> Institutions { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
