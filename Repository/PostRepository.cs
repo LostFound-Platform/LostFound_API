@@ -176,7 +176,7 @@ namespace Repository
                             if (postUser != null)
                             {
                                 string senderName = "Back2Me";
-                                string senderEmail = "baoandng07@gmail.com";
+                                string senderEmail = "mycampuslostfound@gmail.com";
                                 string toName = postUser.FirstName + " " + postUser.LastName;
                                 string toEmail = postUser.Email;
                                 string subject = "🔔 Potential Match for Your Lost Item!";
@@ -333,7 +333,7 @@ namespace Repository
                     var postUser = await userDAO.GetUserByID(postWithImage.Post.UserId);
 
                     string senderName = "Back2Me";
-                    string senderEmail = "baoandng07@gmail.com";
+                    string senderEmail = "mycampuslostfound@gmail.com";
                     string toName = postWithImage.Post.User?.FirstName + " " + postWithImage.Post.User?.LastName;
                     string toEmail = postWithImage.Post.User?.Email;
                     string subject = "📸 Potential Match Found for Your Lost Item!";
@@ -594,7 +594,7 @@ namespace Repository
                                     if (postUser != null)
                                     {
                                         string senderName = "Back2Me";
-                                        string senderEmail = "baoandng07@gmail.com";
+                                        string senderEmail = "mycampuslostfound@gmail.com";
                                         string toName = postUser.FirstName + " " + postUser.LastName;
                                         string toEmail = postUser.Email;
                                         string subject = "🔔 Potential Match for Your Lost Item!";
@@ -751,7 +751,7 @@ namespace Repository
                             var postUser = await userDAO.GetUserByID(postWithImage.Post.UserId);
 
                             string senderName = "Back2Me";
-                            string senderEmail = "baoandng07@gmail.com";
+                            string senderEmail = "mycampuslostfound@gmail.com";
                             string toName = postWithImage.Post.User?.FirstName + " " + postWithImage.Post.User?.LastName;
                             string toEmail = postWithImage.Post.User?.Email;
                             string subject = "📸 Potential Match Found for Your Lost Item!";
@@ -910,7 +910,7 @@ namespace Repository
                     foreach (var item in listUsers)
                     {
                         string senderName = "Back2Me";
-                        string senderEmail = "baoandng07@gmail.com";
+                        string senderEmail = "mycampuslostfound@gmail.com";
                         string toName = item.FirstName + " " + item.LastName;
                         string toEmail = item.Email;
                         string subject = "🚨 New Found Item Posted!";

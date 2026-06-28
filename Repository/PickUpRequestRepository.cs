@@ -49,7 +49,7 @@ namespace Repository
                 if (post != null)
                 {
                     string senderName = "Back2Me";
-                    string senderEmail = "baoandng07@gmail.com";
+                    string senderEmail = "mycampuslostfound@gmail.com";
                     string toName = post.User?.FirstName + " " + post.User?.LastName;
                     string toEmail = post.User?.Email;
                     string subject = "Your pickup request is pending confirmation";
@@ -234,7 +234,7 @@ namespace Repository
                 if (post != null)
                 {
                     string senderName = "Back2Me";
-                    string senderEmail = "baoandng07@gmail.com";
+                    string senderEmail = "mycampuslostfound@gmail.com";
                     string toName = post.User?.FirstName + " " + post.User?.LastName;
                     string toEmail = post.User?.Email;
                     string subject = "Pickup Time Confirmed by Admin!";
@@ -390,7 +390,7 @@ namespace Repository
                 if (post != null && admin != null)
                 {
                     string senderName = "Back2Me";
-                    string senderEmail = "baoandng07@gmail.com";
+                    string senderEmail = "mycampuslostfound@gmail.com";
                     string toName = admin.FirstName + " " + admin.LastName;
                     string toEmail = admin.Email;
                     string subject = "Pickup Time Accepted by User!";
@@ -547,7 +547,7 @@ namespace Repository
                 if (post != null)
                 {
                     string senderName = "Back2Me";
-                    string senderEmail = "baoandng07@gmail.com";
+                    string senderEmail = "mycampuslostfound@gmail.com";
                     string toName = post.User?.FirstName + " " + post.User?.LastName;
                     string toEmail = post.User?.Email;
                     string subject = "Pickup Time Updated";

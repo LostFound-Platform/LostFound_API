@@ -41,7 +41,7 @@ namespace Services
                 foreach (var holder in holders)
                 {
                     string senderName = "Back2Me";
-                    string senderEmail = "baoandng07@gmail.com";
+                    string senderEmail = "mycampuslostfound@gmail.com";
                     string toName = holder.User?.FirstName + " " + holder.User?.LastName;
                     string toEmail = holder.User?.Email;
                     string subject = "⏰ Reminder: Found Item Pending Admin Action";

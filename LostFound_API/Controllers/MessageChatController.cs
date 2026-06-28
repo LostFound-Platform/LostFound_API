@@ -191,7 +191,7 @@ namespace LostFound_API.Controllers
 
                     // Send email notification new chat
                     string senderName = "Back2Me";
-                    string senderEmail = "baoandng07@gmail.com";
+                    string senderEmail = "mycampuslostfound@gmail.com";
                     string toName = user.FirstName + " " + user.LastName;
                     string toEmail = userReceive.Email;
                     string subject = "💬 You have a new chat on Back2me";
@@ -366,7 +366,7 @@ namespace LostFound_API.Controllers
 
                     // Send email notification new message
                     string senderName = "Back2Me";
-                    string senderEmail = "baoandng07@gmail.com";
+                    string senderEmail = "mycampuslostfound@gmail.com";
                     string toName = user.FirstName + " " + user.LastName;
                     string toEmail = userReceive.Email;
                     string subject = "💬 You have a new message on Back2me";

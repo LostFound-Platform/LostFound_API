@@ -257,7 +257,7 @@ namespace LostFound_API.Controllers
                 if (post != null && admin != null)
                 {
                     string senderName = "Back2Me";
-                    string senderEmail = "baoandng07@gmail.com";
+                    string senderEmail = "mycampuslostfound@gmail.com";
                     string toName = admin.FirstName + " " + admin.LastName;
                     string toEmail = admin.Email;
                     string subject = "User Chose to Pick Up Later";
