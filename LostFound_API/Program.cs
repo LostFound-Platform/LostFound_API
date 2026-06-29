@@ -4,6 +4,7 @@ using LostFound_API.DTOs.Match;
 using LostFound_API.DTOs.Posts;
 using LostFound_API.DTOs.Users;
 using LostFound_API.DTOs.VerificationCodes;
+using LostFound_API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -79,6 +80,9 @@ builder.Services.AddAuthentication(options =>
         }
     };
 });
+
+// Add singleton state service one time
+builder.Services.AddSingleton<StateService>();
 
 // Add SignalR
 builder.Services.AddSignalR()
