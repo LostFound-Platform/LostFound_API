@@ -1,6 +1,7 @@
 ﻿using Azure;
 using LostFound_API.DTOs.Institution;
 using LostFound_API.DTOs.Users;
+using LostFound_API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ObjectBusiness;
@@ -18,30 +19,38 @@ namespace LostFound_API.Controllers
     {
         #region Variables
         private readonly IInstitutionRepository institutionRepository;
-        private readonly IWebHostEnvironment webHost;
+        private readonly StateService stateService;
         private readonly IConfiguration configuration;
         private readonly IHttpClientFactory httpClientFactory;
         #endregion
 
         #region Constructor
         public InstitutionController(IInstitutionRepository institutionRepository,
-                               IWebHostEnvironment webHost,
+                               StateService stateService,
                                IConfiguration configuration,
                                IHttpClientFactory httpClientFactory)
         {
             this.institutionRepository = institutionRepository;
-            this.webHost = webHost;
+            this.stateService = stateService;
             this.configuration = configuration;
             this.httpClientFactory = httpClientFactory;
         }
         #endregion
 
-        // GET: api/<InstitutionController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Test()
         {
-            return new string[] { "value1", "value2" };
+            var state = stateService.ByCode["GA"];
+
+            return Ok(state.Name);
         }
+
+        // GET: api/<InstitutionController>
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET api/<InstitutionController>/5
         [HttpGet("search")]
