@@ -173,7 +173,7 @@ namespace Repository
                           </div>
 
                           <p style='text-align:center;'>
-                            <a href='https://back2me.vercel.app/detail-post/{post.PostId}' class='btn'>
+                            <a href='https://lfcampus.vercel.app/detail-post/{post.PostId}' class='btn'>
                               🔎 View Item Details
                             </a>
                           </p>
@@ -347,7 +347,7 @@ namespace Repository
                           </div>
 
                           <p style='text-align:center;'>
-                            <a href='https://back2me.vercel.app/detail-post/{post.PostId}' class='btn'>
+                            <a href='https://lfcampus.vercel.app/detail-post/{post.PostId}' class='btn'>
                               📄 View Pickup Details
                             </a>
                           </p>
@@ -385,7 +385,7 @@ namespace Repository
             if (result != null)
             {
                 var post = await postDAO.GetPostById(result.PostId);
-                var admin = usersDAO.GetAdmin();
+                var admin = usersDAO.GetSystemAdmin();
 
                 if (post != null && admin != null)
                 {
@@ -503,7 +503,7 @@ namespace Repository
                           </div>
 
                           <p style='text-align:center;'>
-                            <a href='https://back2me.vercel.app/detail-post/{post.PostId}' class='btn'>
+                            <a href='https://lfcampus.vercel.app/detail-post/{post.PostId}' class='btn'>
                               📄 View Pickup Details
                             </a>
                           </p>
@@ -644,7 +644,7 @@ namespace Repository
                           </div>
 
                           <p style='text-align:center;'>
-                            <a href='https://back2me.vercel.app/detail-post/{post.PostId}' class='btn'>
+                            <a href='https://lfcampus.vercel.app/detail-post/{post.PostId}' class='btn'>
                               View Updated Details
                             </a>
                           </p>

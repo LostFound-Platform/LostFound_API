@@ -151,7 +151,7 @@ namespace Services
                           </div>
 
                           <p style='text-align: center;'>
-                             <a href='https://back2me.vercel.app/detail-post/{holder.PostId}' class='btn'>🔎 Review Found Item</a>
+                             <a href='https://lfcampus.vercel.app/detail-post/{holder.PostId}' class='btn'>🔎 Review Found Item</a>
                           </p>
 
                           <p>Act quickly to ensure lost items are properly handled!</p>

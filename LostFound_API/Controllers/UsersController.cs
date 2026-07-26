@@ -59,7 +59,7 @@ namespace LostFound_API.Controllers
 
         // GET: api/<UsersController>
         #region Get All Users
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet]
         public async Task<ActionResult<List<Users>>> Get()
         {
@@ -85,7 +85,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Search Email
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet("search-email")]
         public async Task<ActionResult<List<Users>>> SearchEmail([FromQuery] string query)
         {
@@ -169,7 +169,7 @@ namespace LostFound_API.Controllers
         // POST api/<UsersController>
         #region Sign Up
         [HttpPost("sign-up")]
-        public async Task<ActionResult> SignUp([FromBody] Users user)
+        public async Task<ActionResult> SignUp([FromBody] UserDTO user)
         {
             if (user == null)
             {
@@ -179,22 +179,10 @@ namespace LostFound_API.Controllers
                 });
             }
 
-            var institutionIdExist = institutionRepository.GetInstitutionByID(user.InstitutionId);
+            var institutionIdExist = await institutionRepository.GetInstitutionByNameAndAddress(user.InstitutionName, user.InstitutionAddress);
 
             if (institutionIdExist != null)
             {
-                // Check duplicate student ID
-                var existingStudentByStudentId = studentRepository.AllStudents()
-                                                                          .Any(s => s.StudentId == user.StudentId);
-
-                if (existingStudentByStudentId)
-                {
-                    return Conflict(new
-                    {
-                        message = "Your student ID is already in use"
-                    });
-                }
-
                 // Check duplicate email
                 var existingUserByEmail = usersRepository.AllUsers()
                                                          .Any(u => u.Email.Equals(user.Email));
@@ -209,7 +197,20 @@ namespace LostFound_API.Controllers
 
                 try
                 {
-                    var isAddedUser = await usersRepository.SignUp(user);
+                    var userSignUp = new Users
+                    {
+                        UserId = user.UserId,
+                        Email = user.Email,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        InstitutionId = institutionIdExist.InstitutionId,
+                        Password = user.Password,
+                        PickImage1 = user.PickImage1,
+                        PickImage2 = user.PickImage2,
+                        Role = Role.Student,
+                    };
+
+                    var isAddedUser = await usersRepository.SignUp(userSignUp);
                     if (isAddedUser)
                     {
                         var student = new Student
@@ -319,7 +320,7 @@ namespace LostFound_API.Controllers
                               </p>
 
                               <p style='text-align: center;'>
-                                 <a href='https://back2me.vercel.app/verify-email?token={token}' class='btn'>✅ Verify Email</a>
+                                 <a href='https://lfcampus.vercel.app/verify-email?token={token}' class='btn'>✅ Verify Email</a>
                               </p>
 
                               <p>If you did not perform this action, you can safely ignore this email.</p>
@@ -401,7 +402,7 @@ namespace LostFound_API.Controllers
             {
                 return BadRequest(new
                 {
-                    message = "This campus is not available in the system, so the account cannot be created."
+                    message = "Your account cannot be created because your campus has not joined the platform yet."
                 });
             }
         }
@@ -413,7 +414,7 @@ namespace LostFound_API.Controllers
         {
             try
             {
-                var user = await usersRepository.SignIn(signInRequestDTO.StudentId, signInRequestDTO.Password, signInRequestDTO.Email);
+                var user = await usersRepository.SignIn(signInRequestDTO.Password, signInRequestDTO.Email);
 
                 if (user != null && !user.IsActive)
                 {
@@ -425,9 +426,7 @@ namespace LostFound_API.Controllers
                     return Ok(); // Ok to change to select image
                 }
 
-                return Unauthorized(signInRequestDTO.StudentId == 0 ?
-                                    "Email or password is invalid" :
-                                    "Student ID or password is invalid");
+                return Unauthorized("Email or password is invalid");
             }
             catch (Exception ex)
             {
@@ -442,7 +441,7 @@ namespace LostFound_API.Controllers
         {
             try
             {
-                var user = await usersRepository.SignIn(signInRequestDTO.StudentId, signInRequestDTO.Password, signInRequestDTO.Email);
+                var user = await usersRepository.SignIn(signInRequestDTO.Password, signInRequestDTO.Email);
                 if (user != null)
                 {
                     // Check Pick image
@@ -644,7 +643,7 @@ namespace LostFound_API.Controllers
                               </p>
 
                               <p style='text-align: center;'>
-                                <a href='https://back2me.vercel.app/me' class='btn'>Go to Profile</a>
+                                <a href='https://lfcampus.vercel.app/me' class='btn'>Go to Profile</a>
                               </p>
 
                               <p>If you did not perform this action, please contact our support team immediately.</p>
@@ -819,7 +818,7 @@ namespace LostFound_API.Controllers
                               </p>
 
                               <p style='text-align: center;'>
-                                 <a href='https://back2me.vercel.app/verify-email?token={token}' class='btn'>✅ Verify Email</a>
+                                 <a href='https://lfcampus.vercel.app/verify-email?token={token}' class='btn'>✅ Verify Email</a>
                               </p>
 
                               <p>If you did not perform this action, you can safely ignore this email.</p>
@@ -1022,7 +1021,7 @@ namespace LostFound_API.Controllers
                               </p>
 
                               <p style='text-align: center;'>
-                                 <a href='https://back2me.vercel.app/authentication/reset-password?token={token}' class='btn'> Reset Password </a>
+                                 <a href='https://lfcampus.vercel.app/authentication/reset-password?token={token}' class='btn'> Reset Password </a>
                               </p>
 
                               <p>If you did not request a password reset, please ignore this email. Your account will remain secure.</p>
@@ -1320,7 +1319,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Suspend User
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpPut("suspend-user/{userId}")]
         public async Task<ActionResult> SuspendUser(int userId)
         {
@@ -1367,7 +1366,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Unsuspend User
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpPut("unsuspend-user/{userId}")]
         public async Task<ActionResult> UnsuspendUser(int userId)
         {

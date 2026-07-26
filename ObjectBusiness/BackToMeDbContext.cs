@@ -29,10 +29,53 @@ namespace ObjectBusiness
         public DbSet<MessageChat> MessageChat { get; set; }
         public DbSet<Notifications> Notifications { get; set; }
         public DbSet<Institution> Institutions { get; set; }
+        public DbSet<InstitutionRequest> InstitutionRequests { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<MessageChat>()
+                .HasOne(m => m.Chat)
+                .WithMany(c => c.Messages)
+                .HasForeignKey(m => m.ChatId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Notifications>()
+                .HasOne(m => m.PostOriginal)
+                .WithMany()
+                .HasForeignKey(m => m.PostOriginalId)
+                .OnDelete(DeleteBehavior.NoAction); // Prevent multiple cascade paths issue in SQL Server
+
+            modelBuilder.Entity<Notifications>()
+                .HasOne(m => m.PostMatched)
+                .WithMany()
+                .HasForeignKey(m => m.PostMatchedId)
+                .OnDelete(DeleteBehavior.NoAction); // Prevent multiple cascade paths issue in SQL Server
+
+            modelBuilder.Entity<Match>()
+                .HasOne(m => m.LostPost)
+                .WithMany()
+                .HasForeignKey(m => m.LostPostId)
+                .OnDelete(DeleteBehavior.NoAction); // Prevent multiple cascade paths issue in SQL Server
+
+            modelBuilder.Entity<Match>()
+                .HasOne(m => m.FoundPost)
+                .WithMany()
+                .HasForeignKey(m => m.FoundPostId)
+                .OnDelete(DeleteBehavior.NoAction); // Prevent multiple cascade paths issue in SQL Server
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.UserA)
+                .WithMany()
+                .HasForeignKey(c => c.UserAId)
+                .OnDelete(DeleteBehavior.NoAction); // Prevent multiple cascade paths issue in SQL Server
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.UserB)
+                .WithMany()
+                .HasForeignKey(c => c.UserBId)
+                .OnDelete(DeleteBehavior.NoAction); // Prevent multiple cascade paths issue in SQL Server
+
             // Allow converting enum to string
             modelBuilder.Entity<Users>()
                 .Property(u => u.Role)
@@ -45,6 +88,11 @@ namespace ObjectBusiness
 
             // Allow converting enum to string
             modelBuilder.Entity<TransferRequests>()
+                .Property(u => u.Status)
+                .HasConversion<string>();
+
+            // Allow converting enum to string
+            modelBuilder.Entity<InstitutionRequest>()
                 .Property(u => u.Status)
                 .HasConversion<string>();
 
@@ -62,16 +110,17 @@ namespace ObjectBusiness
             modelBuilder.Entity<Users>().HasData(new Users
             {
                 UserId = new Random().Next(),
-                FirstName = "Media",
-                LastName = "Center",
+                FirstName = "System",
+                LastName = "Admin",
                 Password = "$2a$11$92uWViLQUKTIVIADFxhzqe39tDMoLWJX5e1FyXaeedfrq5CoMAGQ6",
                 CreatedAt = DateTime.Now,
                 IsActive = true,
+                IsVerifiedEmail = true,
                 IsAgreedToTerms = true,
-                Email = "baoanwebapp@gmail.com",
+                Email = "mycampuslostfound@gmail.com",
                 PickImage1 = "1",
                 PickImage2 = "12",
-                Role = Role.Admin,
+                Role = Role.SystemAdmin,
                 Avatar = "avatar_CV.jpg",
                 DateOfBirth = new DateTime(2007, 01, 30),
             });

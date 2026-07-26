@@ -45,7 +45,7 @@ namespace DataAccess
         #region Get Student By Id
         public async Task<Student> GetStudentById(int studentId)
         {
-            var student = await db.Student.FirstOrDefaultAsync(s => s.StudentId == studentId);
+            var student = await db.Student.FirstOrDefaultAsync(s => s.UserId == studentId);
             return student;
         }
         #endregion

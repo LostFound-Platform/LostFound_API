@@ -14,14 +14,14 @@ namespace ObjectBusiness
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UserId { get; set; }
-        public int InstitutionId { get; set; }
+        public int? InstitutionId { get; set; }
         [Required(ErrorMessage = "First name cannot be blank")]
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Last name cannot be blank")]
         public string LastName { get; set; }
         [Required(ErrorMessage = "Email cannot be blank")]
         [EmailAddress]
-        public string Email { get; set; } // Institution email
+        public string Email { get; set; } // Institution email (ex: .gwinnetttech.edu)
         public DateTime? DateOfBirth { get; set; }
         [Required(ErrorMessage = "The roles cannot be different between student, parent, and admin")]
         public Role Role { get; set; } // Student or Admin
