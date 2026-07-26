@@ -40,14 +40,6 @@ namespace Repository
         }
         #endregion
 
-        #region GET User By Student Id
-        public async Task<Users> GetUserByStudentId(int studentId)
-        {
-            var user = await usersDAO.GetUserByStudentId(studentId);
-            return user;
-        }
-        #endregion
-
         #region Get user By Email
         public async Task<Users> GetUserByEmail(string email)
         {
@@ -59,7 +51,7 @@ namespace Repository
         #region Get Admin
         public Users GetAdmin()
         {
-            var user = usersDAO.GetAdmin();
+            var user = usersDAO.GetSystemAdmin();
             return user;
         }
         #endregion
@@ -87,29 +79,16 @@ namespace Repository
         #endregion
 
         #region Sign In
-        public async Task<Users> SignIn(int studentId, string password, string? email)
+        public async Task<Users> SignIn(string password, string email)
         {
-            if (studentId == 0 && email != null)
-            {
-                var user = studentId > 0
-                    ? await usersDAO.GetUserByStudentId(studentId)
-                    : await GetUserByEmail(email);
+            var user = await GetUserByEmail(email);
 
-                if (user != null && BCrypt.Net.BCrypt.EnhancedVerify(password, user.Password))
-                {
-                    return user;
-                }
-                return null;
-            }
-            else
+            if (user != null && BCrypt.Net.BCrypt.EnhancedVerify(password, user.Password))
             {
-                var user = await GetUserByStudentId(studentId);
-                if (user != null && BCrypt.Net.BCrypt.EnhancedVerify(password, user.Password))
-                {
-                    return user;
-                }
-                return null;
+                return user;
             }
+
+            return null;
         }
         #endregion
 

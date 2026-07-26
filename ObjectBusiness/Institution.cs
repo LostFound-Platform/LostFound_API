@@ -14,18 +14,15 @@ namespace ObjectBusiness
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int InstitutionId { get; set; }
+        [Required(ErrorMessage = "Institution name cannot be blank")]
         public string InstitutionName { get; set; }
+        [Required]
         public string InstitutionAddress { get; set; }
+        [Required]
         public string InstitutionCity { get; set; }
+        [Required]
         public string InstitutionState { get; set; }
-        public string Password { get; set; }
-        public string PickImage1 { get; set; }
-        public string PickImage2 { get; set; }
-        public bool IsActive { get; set; } = true;
-        public bool IsAgreedToTerms { get; set; } = false;
-        public bool IsVerifiedEmail { get; set; } = false;
         public string? InstitutionPhone { get; set; }
-        public string? InstitutionEmail { get; set; }
         public string? InstitutionWebsite { get; set; }
         public string? InstitutionLogo { get; set; }
         public string? InstitutionDescription { get; set; }

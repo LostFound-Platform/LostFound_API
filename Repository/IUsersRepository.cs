@@ -15,8 +15,7 @@ namespace Repository
         public Task<bool> SuspendUser();
         public Task<bool> UnsuspendUser();
         public Task<Users> GetUserByID(int userId);
-        public Task<Users> SignIn(int studentId, string password, string? email);
-        public Task<Users> GetUserByStudentId(int studentId);
+        public Task<Users> SignIn(string password, string email);
         public Task<Users> GetUserByEmail(string email);
         public Task<bool> UpdateUser();
         public Users GetAdmin();

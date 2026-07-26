@@ -38,7 +38,7 @@ namespace Repository
         #endregion
 
         #region Get user By ID
-        public async Task<Institution> GetInstitutionByID(int institutionId)
+        public async Task<Institution> GetInstitutionByID(int? institutionId)
         {
             var user = await institutionDAO.GetInstitutionByID(institutionId);
             return user;

@@ -44,7 +44,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         // GET: api/<PickUpRequestController>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet]
         public async Task<ActionResult<List<PickUpRequest>>> Get()
         {
@@ -53,7 +53,7 @@ namespace LostFound_API.Controllers
         }
 
         #region Search Pick-Up Request for Admin
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet("search-request")]
         public async Task<ActionResult<List<PickUpRequest>>> SearchRequest([FromQuery] string query)
         {
@@ -77,7 +77,7 @@ namespace LostFound_API.Controllers
         }
 
         #region Accept Time
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpPost("accept-time/{requestId}")]
         public async Task<ActionResult> AcceptTime(int requestId)
         {
@@ -120,7 +120,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Change Time
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpPost("change-time/{requestId}")]
         public async Task<ActionResult> ChangeTime(int requestId, [FromBody] DateTime newDate)
         {
@@ -363,7 +363,7 @@ namespace LostFound_API.Controllers
                           </div>
 
                           <p style='text-align:center;'>
-                            <a href='https://back2me.vercel.app/detail-post/{post.PostId}' class='btn'>
+                            <a href='https://lfcampus.vercel.app/detail-post/{post.PostId}' class='btn'>
                               📄 View Pickup Details
                             </a>
                           </p>

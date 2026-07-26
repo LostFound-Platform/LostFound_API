@@ -110,6 +110,7 @@ builder.Services.AddScoped<ChatDAO>();
 builder.Services.AddScoped<NotificationsDAO>();
 builder.Services.AddScoped<MessageChatDAO>();
 builder.Services.AddScoped<InstitutionDAO>();
+builder.Services.AddScoped<InstitutionRequestDAO>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
@@ -122,6 +123,7 @@ builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IMessageChatRepository, MessageChatRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IInstitutionRepository, InstitutionRepository>();
+builder.Services.AddScoped<IInstitutionRequestRepository, InstitutionRequestRepository>();
 
 // Register BackgroundService
 builder.Services.AddHostedService<HolderReminderService>();
@@ -129,7 +131,13 @@ builder.Services.AddHostedService<HolderReminderService>();
 // Connect to SQL Server
 builder.Services.AddDbContext<BackToMeDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection"));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("MyConnection"),
+        sql => sql.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: null
+        ));
 });
 
 // Register for send email

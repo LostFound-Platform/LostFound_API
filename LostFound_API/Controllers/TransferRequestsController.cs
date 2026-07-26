@@ -35,7 +35,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         // GET: api/<TransferRequestsController>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet]
         public ActionResult<List<TransferRequests>> Get()
         {
@@ -67,7 +67,7 @@ namespace LostFound_API.Controllers
         }
 
         #region Mark Received
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpPost("mark-received")]
         public async Task<ActionResult> MarkReceived([FromBody] UserHandOverAdminDTO info)
         {
@@ -91,7 +91,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Mark Received
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpPost("cancel-handover")]
         public async Task<ActionResult> CancelHandover([FromBody] UserHandOverAdminDTO info)
         {
@@ -135,7 +135,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Search Transfer Request for Admin
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet("search-request")]
         public async Task<ActionResult<List<TransferRequests>>> SearchFirstNameRequest([FromQuery] string query)
         {

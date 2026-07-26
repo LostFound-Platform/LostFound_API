@@ -293,7 +293,7 @@ namespace Repository
                                           </div>
 
                                           <p style='text-align: center;'>
-                                             <a href='https://back2me.vercel.app/detail-post/{post.PostId}' class='btn'>🔎 View Item</a>
+                                             <a href='https://lfcampus.vercel.app/detail-post/{post.PostId}' class='btn'>🔎 View Item</a>
                                           </p>
 
                                           <p>We recommend checking as soon as possible to reclaim your lost item.</p>
@@ -454,7 +454,7 @@ namespace Repository
                               </div>
 
                               <p style='text-align: center;'>
-                                 <a href='https://back2me.vercel.app/detail-post/{post.PostId}' class='btn'>🔎 View Found Item</a>
+                                 <a href='https://lfcampus.vercel.app/detail-post/{post.PostId}' class='btn'>🔎 View Found Item</a>
                               </p>
 
                               <p>Act quickly to reclaim your lost item before someone else does!</p>
@@ -711,7 +711,7 @@ namespace Repository
                                               </div>
 
                                               <p style='text-align: center;'>
-                                                 <a href='https://back2me.vercel.app/detail-post/{post.PostId}' class='btn'>🔎 View Item</a>
+                                                 <a href='https://lfcampus.vercel.app/detail-post/{post.PostId}' class='btn'>🔎 View Item</a>
                                               </p>
 
                                               <p>We recommend checking as soon as possible to reclaim your lost item.</p>
@@ -872,7 +872,7 @@ namespace Repository
                                   </div>
 
                                   <p style='text-align: center;'>
-                                     <a href='https://back2me.vercel.app/detail-post/{post.PostId}' class='btn'>🔎 View Found Item</a>
+                                     <a href='https://lfcampus.vercel.app/detail-post/{post.PostId}' class='btn'>🔎 View Found Item</a>
                                   </p>
 
                                   <p>Act quickly to reclaim your lost item before someone else does!</p>
@@ -903,7 +903,7 @@ namespace Repository
                 }
 
                 // Send Email to all students
-                if (post.TypePost == TypePost.Found && user.Role == Role.Admin)
+                if (post.TypePost == TypePost.Found && user.Role == Role.SystemAdmin)
                 {
                     var listUsers = userDAO.AllUsers().ToList();
 
@@ -1029,7 +1029,7 @@ namespace Repository
                                   </div>
 
                                   <p style='text-align: center;'>
-                                     <a href='https://back2me.vercel.app/detail-post/{post.PostId}' class='btn'>🔎 View Found Item</a>
+                                     <a href='https://lfcampus.vercel.app/detail-post/{post.PostId}' class='btn'>🔎 View Found Item</a>
                                   </p>
 
                                   <p>Thank you for your quick attention!</p>

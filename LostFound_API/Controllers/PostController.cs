@@ -139,7 +139,7 @@ namespace LostFound_API.Controllers
 
         #region All Lost Post Codes
         // GET: api/<PostController>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet("lost-post-codes")]
         public async Task<ActionResult<List<object>>> AllLostPostCodes()
         {
@@ -215,7 +215,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region My Posts
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet("user-posts/{userId}")]
         public async Task<ActionResult<List<Posts>>> GetAllPostsByUserId(int userId)
         {
@@ -241,7 +241,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Get Lost Posts Per Month
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet("lost-posts-per-month")]
         public async Task<List<object>> GetLostPostsPerMonth()
         {
@@ -251,7 +251,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Get Found Posts Per Month
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet("found-posts-per-month")]
         public async Task<List<object>> GetFoundPostsPerMonth()
         {
@@ -261,7 +261,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Get Received Posts Per Month
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet("received-posts-per-month")]
         public async Task<List<object>> GetReceivedPostsPerMonth()
         {
@@ -271,7 +271,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Get Found Posts Not Received
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet("found-posts-not-received")]
         public async Task<List<object>> GetFoundPostsNotReceived()
         {
@@ -473,7 +473,7 @@ namespace LostFound_API.Controllers
         #endregion
 
         #region Search Code Lost for Admin
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpGet("search-codes")]
         public async Task<ActionResult<List<Posts>>> SearchCodes([FromQuery] string query)
         {
@@ -587,7 +587,7 @@ namespace LostFound_API.Controllers
 
         #region Delete Post for Admin
         // DELETE api/<PostController>/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SystemAdmin")]
         [HttpDelete("{postId}")]
         public async Task<ActionResult<bool>> Delete(int postId)
         {

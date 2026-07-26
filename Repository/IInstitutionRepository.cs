@@ -11,7 +11,7 @@ namespace Repository
     {
         public Task<bool> CreateInstitution(Institution institution);
         public IQueryable<Institution> AllInstitutions();
-        public Task<Institution> GetInstitutionByID(int institutionId);
+        public Task<Institution> GetInstitutionByID(int? institutionId);
         public Task<Institution?> GetInstitutionByNameAndAddress(string institutionName, string institutionAddress);
     }
 }

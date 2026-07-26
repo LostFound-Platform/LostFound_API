@@ -63,20 +63,10 @@ namespace DataAccess
         }
         #endregion
 
-        #region Get Admin
-        public Users GetAdmin()
+        #region Get System Admin
+        public Users GetSystemAdmin()
         {
-            var user = db.Users.FirstOrDefault(u => u.Role == Role.Admin);
-            return user;
-        }
-        #endregion
-
-        #region Get User By Student Id
-        public async Task<Users> GetUserByStudentId(int studentId)
-        {
-            var user = await db.Users
-                         .Include(u => u.Student)
-                         .FirstOrDefaultAsync(s => s.Student.StudentId == studentId);
+            var user = db.Users.FirstOrDefault(u => u.Role == Role.SystemAdmin);
             return user;
         }
         #endregion

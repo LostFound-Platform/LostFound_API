@@ -293,7 +293,7 @@ namespace LostFound_API.Controllers
                           </div>
 
                           <p style='text-align: center;'>
-                            <a href='https://back2me.vercel.app/' class='btn'>
+                            <a href='https://lfcampus.vercel.app/' class='btn'>
                               💬 Open Chat
                             </a>
                           </p>
@@ -468,7 +468,7 @@ namespace LostFound_API.Controllers
                           </div>
 
                           <p style='text-align: center;'>
-                            <a href='https://back2me.vercel.app/' class='btn'>
+                            <a href='https://lfcampus.vercel.app/' class='btn'>
                               💬 Open Chat
                             </a>
                           </p>

@@ -56,15 +56,22 @@ namespace DataAccess
             institutionName = institutionName.Trim();
             institutionAddress = institutionAddress.Trim();
 
-            var institution = await db.Institutions.AsNoTracking()
+            try
+            {
+                var institution = await db.Institutions.AsNoTracking()
                                                    .FirstOrDefaultAsync(i => i.InstitutionName.Contains(institutionName) &&
                                                    i.InstitutionAddress.Contains(institutionAddress));
-            return institution;
+                return institution;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
         }
         #endregion
 
         #region Get Institution By ID
-        public async Task<Institution> GetInstitutionByID(int institutionId)
+        public async Task<Institution> GetInstitutionByID(int? institutionId)
         {
             var institution = await db.Institutions.FirstOrDefaultAsync(u => u.InstitutionId == institutionId);
             return institution;
@@ -87,7 +94,7 @@ namespace DataAccess
         #endregion
 
         #region Delete Institution
-        public async Task<bool> DeleteInstitution(int institutionId)
+        public async Task<bool> DeleteInstitution(int? institutionId)
         {
             return false;
         }

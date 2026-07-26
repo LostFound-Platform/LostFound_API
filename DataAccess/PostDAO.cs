@@ -351,7 +351,7 @@ namespace DataAccess
             if (post == null) return false;
 
             post.OldUserId = oldUserId;
-            post.UserId = usersDAO.GetAdmin().UserId;
+            post.UserId = usersDAO.GetSystemAdmin().UserId;
             post.UpdatedAt = DateTime.Now;
             try
             {

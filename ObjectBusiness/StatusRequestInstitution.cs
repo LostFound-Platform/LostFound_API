@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace ObjectBusiness
 {
-    public enum Role
+    public enum StatusRequestInstitution
     {
-        SystemAdmin,
-        InstitutionAdmin,
-        Staff,
-        Student
+        Pending,
+        Approved,
+        Rejected,
     }
 }
