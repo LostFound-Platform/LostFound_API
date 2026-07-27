@@ -48,8 +48,15 @@ namespace DataAccess
         #region Get Institution Request By ID
         public async Task<InstitutionRequest> GetInstitutionRequestByID(int requestId)
         {
-            var institutionRequest = await db.InstitutionRequests.FirstOrDefaultAsync(r => r.InstitutionRequestId == requestId);
-            return institutionRequest;
+            try
+            {
+                var institutionRequest = await db.InstitutionRequests.FirstOrDefaultAsync(r => r.InstitutionRequestId == requestId);
+                return institutionRequest;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         #endregion
 

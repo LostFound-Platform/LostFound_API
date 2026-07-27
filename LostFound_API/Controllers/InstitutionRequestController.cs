@@ -4,11 +4,13 @@ using LostFound_API.DTOs.Users;
 using LostFound_API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json.Linq;
 using ObjectBusiness;
 using Repository;
 using Services;
+using SignalRLayer;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -28,6 +30,7 @@ namespace LostFound_API.Controllers
         private readonly StateService stateService;
         private readonly IMemoryCache memoryCache;
         private readonly IConfiguration configuration;
+        private readonly IHubContext<SystemHub> hubContext;
         private readonly EmailSender emailSender;
         private readonly IHttpClientFactory httpClientFactory;
         #endregion
@@ -40,7 +43,8 @@ namespace LostFound_API.Controllers
                                IUsersRepository usersRepository,
                                EmailSender emailSender,
                                IMemoryCache memoryCache,
-                               IInstitutionRepository institutionRepository)
+                               IInstitutionRepository institutionRepository,
+                               IHubContext<SystemHub> hubContext)
         {
             this.institutionRequestRepository = institutionRequestRepository;
             this.stateService = stateService;
@@ -50,6 +54,7 @@ namespace LostFound_API.Controllers
             this.emailSender = emailSender;
             this.memoryCache = memoryCache;
             this.institutionRepository = institutionRepository;
+            this.hubContext = hubContext;
         }
         #endregion
 
@@ -208,7 +213,7 @@ namespace LostFound_API.Controllers
 
                             <p>
                               Your institution registration request for
-                              <strong>{institutionRequest.InstitutionName}</strong>
+                              <strong>{institutionRequest.InstitutionName}'s {institutionRequest.InstitutionAddress} campus</strong>
                               has now been submitted for review.
                             </p>
 
@@ -272,6 +277,8 @@ namespace LostFound_API.Controllers
                 {
                     institutionRequest.IsVerifiedWebsite = true;
                     institutionRequest.WebsiteVerifiedAt = DateTime.Now;
+                    institutionRequest.ReviewedDate = DateTime.Now;
+                    institutionRequest.ReviewedBy = "System Admin"; // Can replace this with the actual admin's name if available later
                     var isUpdated = await institutionRequestRepository.UpdateInstitutionRequest();
                     if (isUpdated)
                     {
@@ -608,7 +615,7 @@ namespace LostFound_API.Controllers
         #region Approve Request
         // PUT api/<InstitutionRequestController>/5
         [Authorize(Roles = "SystemAdmin")]
-        [HttpPut("approve/{id}")]
+        [HttpPost("approve/{id}")]
         public async Task<ActionResult> ApproveRequest(int id)
         {
             // Get the authenticated user's email from the claims
@@ -635,6 +642,7 @@ namespace LostFound_API.Controllers
             // Update information
             var institutionRequest = await institutionRequestRepository.GetInstitutionRequestByID(id);
             institutionRequest.Status = StatusRequestInstitution.Approved;
+            institutionRequest.IsVerifiedInstitution = true;
             institutionRequest.UpdatedDate = DateTime.Now;
 
             var isUpdated = await institutionRequestRepository.UpdateInstitutionRequest();
@@ -643,23 +651,6 @@ namespace LostFound_API.Controllers
                 return BadRequest(new
                 {
                     message = "Update request failed"
-                });
-            }
-
-            var institution = new Institution
-            {
-                InstitutionName = institutionRequest.InstitutionName,
-                InstitutionAddress = institutionRequest.InstitutionAddress,
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now
-            };
-
-            var isAdded = await institutionRepository.CreateInstitution(institution);
-            if (!isAdded)
-            {
-                return BadRequest(new
-                {
-                    message = "Create institution failed"
                 });
             }
 
@@ -751,7 +742,7 @@ namespace LostFound_API.Controllers
 
                     <p>
                         Congratulations! Your institution
-                        <strong>{institutionRequest.InstitutionName}</strong>
+                        <strong>{institutionRequest.InstitutionName}'s {institutionRequest.InstitutionAddress} campus</strong>
                         has been successfully approved by the <strong>Back2Me Team</strong>.
                     </p>
 
@@ -801,7 +792,7 @@ namespace LostFound_API.Controllers
 
             return Ok(new
             {
-                message = "Update request successfully"
+                message = "Approve request successfully"
             });
         }
         #endregion
@@ -834,7 +825,7 @@ namespace LostFound_API.Controllers
 
             // Update information
             var institutionRequest = await institutionRequestRepository.GetInstitutionRequestByID(id);
-            institutionRequest.Status = StatusRequestInstitution.Rejected;
+            institutionRequest.Status = StatusRequestInstitution.Declined;
             institutionRequest.RejectReason = rejectReason;
             institutionRequest.ReviewedBy = userExisted.FirstName + " " + userExisted.LastName;
             institutionRequest.ReviewedDate = DateTime.Now;
@@ -954,7 +945,7 @@ namespace LostFound_API.Controllers
 
                     <p>
                         Thank you for your interest in registering
-                        <strong>{institution.InstitutionName}</strong>
+                        <strong>{institution.InstitutionName}'s {institution.InstitutionAddress} campus</strong>
                         with <strong>Back2Me</strong>.
                     </p>
 

@@ -10,6 +10,6 @@ namespace ObjectBusiness
     {
         Pending,
         Approved,
-        Rejected,
+        Declined,
     }
 }
