@@ -184,7 +184,7 @@ namespace LostFound_API.Controllers
         #region My Posts
         [Authorize]
         [HttpGet("my-posts")]
-        public async Task<ActionResult<List<Posts>>> GetAllPostsByUserId()
+        public async Task<ActionResult<List<Posts>>> MyPosts()
         {
             var userEmail = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -214,7 +214,7 @@ namespace LostFound_API.Controllers
         }
         #endregion
 
-        #region My Posts
+        #region User Posts
         [Authorize(Roles = "SystemAdmin")]
         [HttpGet("user-posts/{userId}")]
         public async Task<ActionResult<List<Posts>>> GetAllPostsByUserId(int userId)
